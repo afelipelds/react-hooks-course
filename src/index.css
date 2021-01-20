@@ -15,13 +15,21 @@ code {
 }
 /*set the modes of views */
 .dark-mode { background: #201e1e; border: 1px solid #fafafa; }
-.dark-mode h1, 
+.dark-mode h1 { 
+  -webkit-text-fill-color: #201e1e;
+  -webkit-text-stroke-color: #f1d248;
+  -webkit-text-stroke-width: 0.5px; 
+ }
 .dark-mode h2, 
 .dark-mode p { color: #fafafa; }
 .dark-mode p b { color: #f1d248; }
 .dark-mode .Character { border: 1px solid #fafafa; }
 .light-mode { background: #fafafa; border: 1px solid #201e1e; }
-.light-mode h1, 
+.light-mode h1 { 
+  -webkit-text-fill-color: #f1d248;
+  -webkit-text-stroke-color: #201e1e;
+  -webkit-text-stroke-width: 0.5px; 
+}
 .light-mode h2,
 .light-mode p { color: #201e1e; }
 .light-mode .Character { border: 1px solid #201e1e; }
