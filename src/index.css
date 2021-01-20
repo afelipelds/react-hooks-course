@@ -46,6 +46,17 @@ code {
   width: 100%;
   margin: 0 auto;
   display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.Characters-title {
+  font-size: 20px;
+}
+.Characters-list {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
   flex-flow: row wrap;
   justify-content: center;
   box-sizing: border-box;
