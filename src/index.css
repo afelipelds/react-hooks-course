@@ -68,3 +68,10 @@ code {
 .Character figure img {
   width: calc(100%);
 }
+.Characters input {
+  width: calc(80%);
+  
+  margin: 2rem auto;
+  padding:.3rem .5rem;
+
+}

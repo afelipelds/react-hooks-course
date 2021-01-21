@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState, useEffect, useReducer, useMemo } from 'react'
 
 const initialState = {
     favoritesCharacters: []
@@ -27,30 +27,47 @@ const favoriteReducer = (state, action) => {
 
 const Characters = () => {
     const [characters, setCharacters] = useState([]);
-    const [favorites, dispatch] = useReducer(favoriteReducer, initialState)
-
+    const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
+    const [search, setSearch] = useState('');
+    
     const getCharacters = async () => {
         const response = await fetch('https://rickandmortyapi.com/api/character/');
         const data = await response.json();
         const results = data.results;
         setCharacters(results);
-    }
-
+    };
     useEffect(() => {
         getCharacters();
-    }, [])
+    }, []);
 
     const handleClickOnFavorite = favorite => {
         dispatch({type: 'ADD_TO_FAVORITES', payload: favorite});
-    }
+    };
 
     const handleClickOnDeleteFavorite = character => {
         dispatch({type: 'DELETE_FROM_FAVORITES', payload: character})
+    };
+
+    const handleSearch = event => {
+        setSearch(event.target.value)
     }
+    
+    /* const filteredCharacters = characters.filter( character => {
+        return character.name.toLowerCase().includes(search.toLowerCase());
+    }) */
+    const filteredCharacters = useMemo(() => 
+        characters.filter( character => {
+            return character.name.toLowerCase().includes(search.toLowerCase());
+        }), 
+        [characters, search]
+    )
 
     return (
         <div className="">
             <div className="Characters">
+                <div className="Characters">
+                    <input type="text" id="search-input" placeholder="Realiza una búsqueda para agregar a tus favoritos" value={search} onChange={handleSearch} />
+                </div>
                 {
                     favorites.favoritesCharacters.length > 0 && (
                         <>
@@ -87,7 +104,7 @@ const Characters = () => {
                 </div>
                 <div className="Characters-list">
                     {
-                        characters.map( (character) => (
+                        filteredCharacters.map( (character) => (
                             <div className="Character" key={character.name}>
                                 <h2>{ character.name}</h2>
                                 <figure>
