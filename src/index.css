@@ -40,6 +40,7 @@ code {
   border: none;
   padding: .3rem;
   border-radius: 8px;
+  cursor: pointer;
 }:focus { outline: none; }
 
 .Characters {
