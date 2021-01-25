@@ -1,8 +1,16 @@
-import React, { useState, useEffect, useReducer, useMemo, useRef } from 'react'
+import React, { useState, 
+                useReducer, 
+                useMemo, 
+                useRef, 
+                useCallback } from 'react';
+import Search from './Search';
+import useCharacters from '../hooks/useCharacters';
 
 const initialState = {
     favoritesCharacters: []
 };
+
+const API = 'https://rickandmortyapi.com/api/character/';
 
 const favoriteReducer = (state, action) => {
     switch(action.type) {
@@ -26,38 +34,56 @@ const favoriteReducer = (state, action) => {
 }
 
 const Characters = () => {
-    const [characters, setCharacters] = useState([]);
     const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
     const [search, setSearch] = useState('');
-    // const searchInput = useRef(null);
+    const searchInput = useRef(null);
+
+    const characters = useCharacters(API)
+    
+    /** Call API 
+     * Esto es reemplazado por un hook. GO TO: ../../hooks/useCharacters
     
     const getCharacters = async () => {
-        const response = await fetch('https://rickandmortyapi.com/api/character/');
+        const response = await fetch(API);
         const data = await response.json();
-        const results = data.results;
+        const results = data.results;w/** 
         setCharacters(results);
     };
+    
+    //Review the characters
     useEffect(() => {
         getCharacters();
     }, []);
 
-    const handleClickOnFavorite = favorite => {
+    */
+
+    /** Action to add favorite character */
+    const handleClickAddFavorite = favorite => {
         dispatch({type: 'ADD_TO_FAVORITES', payload: favorite});
     };
-
+    /** Action to add favorite character */
     const handleClickOnDeleteFavorite = character => {
         dispatch({type: 'DELETE_FROM_FAVORITES', payload: character})
     };
 
-    const handleSearch = (event) => {
-        setSearch(event.target.value)
-        console.log(event)
-        // setSearch(searchInput.current.value);
-    }
+    /** Set the value of the searching word */
+    // const handleSearch = (event) => {
+    //     setSearch(event.target.value);
+    //     // console.log(searchInput)
+    // }
+    const handleSearchInput = useCallback( 
+        () => {
+            setSearch(searchInput.current.value);
+        },
+        []
+    )
     
-    /* const filteredCharacters = characters.filter( character => {
-        return character.name.toLowerCase().includes(search.toLowerCase());
-    }) */
+    /** Function to memoize the values (characters & search) when user is searching a character
+     * Works like below:
+     * const filteredCharacters = characters.filter( character => {
+     *     return character.name.toLowerCase().includes(search.toLowerCase());
+     * })
+    */
     const filteredCharacters = useMemo(() => 
         characters.filter( character => {
             return character.name.toLowerCase().includes(search.toLowerCase());
@@ -68,9 +94,7 @@ const Characters = () => {
     return (
         <div className="">
             <div className="Characters">
-                <div className="Characters">
-                    <input type="text" id="search-input" /* ref={searchInput} */ placeholder="Realiza una búsqueda para agregar a tus favoritos" value={search} onChange={handleSearch} />
-                </div>
+                <Search search={search} searchInput={searchInput} handleSearch={handleSearchInput} />
                 {
                     favorites.favoritesCharacters.length > 0 && (
                         <>
@@ -118,7 +142,7 @@ const Characters = () => {
                                         <p><b>Location: </b> {character.location.name}</p>
                                         <p><b>Specie: </b> {character.species}</p>
                                         <p><b>Status: </b> {character.status}</p>
-                                        <p><button type="button" onClick={() => handleClickOnFavorite(character)}>Add to favorites</button></p>
+                                        <p><button type="button" onClick={() => handleClickAddFavorite(character)}>Add to favorites</button></p>
                                     </figcaption>
                                 </figure>
                             </div>
