@@ -25,6 +25,9 @@ function App() {
 
       <Characters />
 
+      <footer className="footer">
+        Hecho con el corazón y la clase de React Hooks =)
+      </footer>
     </div>
   );
 }

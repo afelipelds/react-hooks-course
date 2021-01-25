@@ -76,3 +76,11 @@ code {
   padding:.3rem .5rem;
 
 }
+
+.footer {
+  margin: 2rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+}
